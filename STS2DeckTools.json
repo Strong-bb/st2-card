@@ -1,6 +1,6 @@
 {
-  "id": "STS2SelectCard",
-  "name": "Slay the Spire 2 Select Card",
+  "id": "STS2DeckTools",
+  "name": "Slay the Spire 2 Deck Tools",
   "author": "shiro",
   "description": "Adds Add Card and Remove Card buttons to the pause menu. Add Card opens a card picker for the current character and adds the chosen card to the deck. Remove Card uses the game's native removal flow, preferring the merchant removal path in shops and the reward removal path elsewhere.",
   "version": "1.1",

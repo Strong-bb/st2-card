@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Nodes.Screens.PauseMenu;
 using MegaCrit.Sts2.Core.Runs;
 
-namespace STS2SelectCard.Scripts;
+namespace STS2DeckTools.Scripts;
 
 [ModInitializer("Init")]
 public partial class Entry
@@ -45,10 +45,10 @@ public partial class Entry
 
     public static void Init()
     {
-        var harmony = new Harmony("sts2selectcard.devconsole");
+        var harmony = new Harmony("sts2decktools.devconsole");
         harmony.PatchAll(typeof(Entry).Assembly);
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
-        Log.Debug("STS2SelectCard initialized.");
+        Log.Debug("STS2DeckTools initialized.");
     }
 
     [HarmonyPatch(typeof(DevConsole))]
@@ -63,7 +63,7 @@ public partial class Entry
         {
             if (RegisterCommandMethod == null)
             {
-                Log.Error("STS2SelectCard could not find DevConsole.RegisterCommand.");
+                Log.Error("STS2DeckTools could not find DevConsole.RegisterCommand.");
                 return;
             }
 
@@ -190,7 +190,7 @@ public partial class Entry
                 CardModel? selectedCard = (await selectionScreen.CardsSelected()).FirstOrDefault();
                 if (selectedCard == null)
                 {
-                    Log.Info($"STS2SelectCard {mode.LogActionName} selection was canceled.");
+                    Log.Info($"STS2DeckTools {mode.LogActionName} selection was canceled.");
                     return;
                 }
 
@@ -199,27 +199,27 @@ public partial class Entry
                     CardPileAddResult result = await CardPileCmd.Add(selectedCard, PileType.Deck);
                     if (!result.success)
                     {
-                        Log.Warn($"STS2SelectCard failed to add '{selectedCard.Title}' [{selectedCard.Id.Entry}] to the deck.");
+                        Log.Warn($"STS2DeckTools failed to add '{selectedCard.Title}' [{selectedCard.Id.Entry}] to the deck.");
                         return;
                     }
 
-                    Log.Info($"STS2SelectCard added '{result.cardAdded.Title}' [{result.cardAdded.Id.Entry}] to the deck from the selection panel.");
+                    Log.Info($"STS2DeckTools added '{result.cardAdded.Title}' [{result.cardAdded.Id.Entry}] to the deck from the selection panel.");
                 }
                 else
                 {
                     bool removed = await RunNativeRemoval(player);
                     if (!removed)
                     {
-                        Log.Warn("STS2SelectCard native remove-card flow failed or was canceled.");
+                        Log.Warn("STS2DeckTools native remove-card flow failed or was canceled.");
                         return;
                     }
 
-                    Log.Info("STS2SelectCard removed a card using the native flow from the selection panel.");
+                    Log.Info("STS2DeckTools removed a card using the native flow from the selection panel.");
                 }
             }
             catch (TaskCanceledException)
             {
-                Log.Info($"STS2SelectCard {mode.LogActionName} selection panel was closed before a card was chosen.");
+                Log.Info($"STS2DeckTools {mode.LogActionName} selection panel was closed before a card was chosen.");
             }
             finally
             {
@@ -357,7 +357,7 @@ public partial class Entry
             using Godot.FileAccess? file = Godot.FileAccess.Open(CardsLocPath, Godot.FileAccess.ModeFlags.Read);
             if (file == null)
             {
-                Log.Warn($"STS2SelectCard could not open localization file at '{CardsLocPath}'.");
+                Log.Warn($"STS2DeckTools could not open localization file at '{CardsLocPath}'.");
                 return titles;
             }
 
@@ -379,7 +379,7 @@ public partial class Entry
             }
             catch (Exception ex)
             {
-                Log.Error($"STS2SelectCard failed to parse '{CardsLocPath}': {ex}");
+                Log.Error($"STS2DeckTools failed to parse '{CardsLocPath}': {ex}");
             }
 
             return titles;
@@ -415,7 +415,7 @@ public partial class Entry
         NRun.Instance?.GlobalUi?.TopBar?.Pause?.ToggleAnimState();
         if (NGame.Instance == null)
         {
-            Log.Error("STS2SelectCard could not access NGame while opening from the pause menu.");
+            Log.Error("STS2DeckTools could not access NGame while opening from the pause menu.");
             EndSelectionSession();
             return;
         }
@@ -428,14 +428,14 @@ public partial class Entry
         Player? player = LocalContext.GetMe(RunManager.Instance.DebugOnlyGetState());
         if (player == null)
         {
-            Log.Error("STS2SelectCard could not find the local player when opening from the pause menu.");
+            Log.Error("STS2DeckTools could not find the local player when opening from the pause menu.");
             EndSelectionSession();
             return;
         }
 
         if (!CanOpenFromCurrentState(mode, out string? reason))
         {
-            Log.Warn($"STS2SelectCard blocked {mode.LogActionName}: {reason}");
+            Log.Warn($"STS2DeckTools blocked {mode.LogActionName}: {reason}");
             EndSelectionSession();
             return;
         }
@@ -449,7 +449,7 @@ public partial class Entry
         IReadOnlyList<CardChoice> choices = SelectCardConsoleCmd.GetChoices(player);
         if (choices.Count == 0)
         {
-            Log.Warn($"STS2SelectCard found no available cards for {mode.LogActionName} while opening from the pause menu.");
+            Log.Warn($"STS2DeckTools found no available cards for {mode.LogActionName} while opening from the pause menu.");
             EndSelectionSession();
             return;
         }
@@ -536,7 +536,7 @@ public partial class Entry
             bool removed = await RunNativeRemoval(player);
             if (!removed)
             {
-                Log.Info("STS2SelectCard native remove-card flow was canceled or found no removable cards.");
+            Log.Info("STS2DeckTools native remove-card flow was canceled or found no removable cards.");
             }
         }
         finally
@@ -549,11 +549,11 @@ public partial class Entry
     {
         if (IsMerchantRoom())
         {
-            Log.Info("STS2SelectCard using merchant native card-removal flow.");
+            Log.Info("STS2DeckTools using merchant native card-removal flow.");
             return RunManager.Instance.OneOffSynchronizer.DoLocalMerchantCardRemoval(0, cancelable: true);
         }
 
-        Log.Info("STS2SelectCard using reward native card-removal flow.");
+        Log.Info("STS2DeckTools using reward native card-removal flow.");
         return RunManager.Instance.RewardSynchronizer.DoLocalCardRemoval();
     }
 

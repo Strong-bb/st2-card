@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STS2SelectCard", "STS2SelectCard.csproj", "{2D246CF4-E3DC-46D5-BFC7-6452226C7B86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STS2DeckTools", "STS2DeckTools.csproj", "{2D246CF4-E3DC-46D5-BFC7-6452226C7B86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
