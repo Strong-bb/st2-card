@@ -15,6 +15,23 @@
 3. Launch the game in modded mode.
 4. Enter a run, open the pause menu, and use `Add Card` or `Remove Card`.
 
+### Pause Menu
+
+After the mod loads, the pause menu shows two new buttons:
+
+- `Add Card`
+- `Remove Card`
+
+Image path to add here when available:
+`docs/images/pause-menu.png`
+
+### Native Remove Flow
+
+`Remove Card` uses the game's native removal UI instead of directly mutating the deck.
+
+Image path to add here when available:
+`docs/images/native-remove-card.png`
+
 ## Build From Source
 
 1. Install .NET 9 SDK.
